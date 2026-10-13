@@ -1,0 +1,16 @@
+services:
+  rediscover:
+    image: ttlequals0/rediscover:0.1.0
+    container_name: rediscover
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      # How this container reaches Karakeep (an internal Docker address is fine).
+      KARAKEEP_URL: http://karakeep:3000
+      KARAKEEP_API_KEY: ${KARAKEEP_API_KEY}
+      # How your browser reaches Karakeep, for opening notes/files. Optional.
+      KARAKEEP_PUBLIC_URL: https://karakeep.example.com
+      # Archive + tag links that are clearly dead (404/410, domain gone). Default: true
+      ARCHIVE_DEAD_LINKS: "true"
+      DEAD_LINK_TAG: dead-link

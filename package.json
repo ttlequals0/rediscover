@@ -1,0 +1,10 @@
+{
+  "name": "rediscover",
+  "version": "0.1.0",
+  "description": "Open a random, still-alive Karakeep bookmark. Dead links get archived and tagged.",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": { "start": "node src/server.js", "test": "node --test" },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}
