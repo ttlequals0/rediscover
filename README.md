@@ -15,7 +15,7 @@ You need a running Karakeep instance and an API key. Create the key in Karakeep 
 ```yaml
 services:
   rediscover:
-    image: ttlequals0/rediscover:0.1.0
+    image: ttlequals0/rediscover:0.1.1
     container_name: rediscover
     restart: unless-stopped
     ports:
@@ -42,7 +42,7 @@ docker run -d --name rediscover --restart unless-stopped -p 8080:8080 \
   -e KARAKEEP_URL=http://karakeep.lan:3000 \
   -e KARAKEEP_API_KEY=your_api_key \
   -e KARAKEEP_PUBLIC_URL=https://karakeep.example.com \
-  ttlequals0/rediscover:0.1.0
+  ttlequals0/rediscover:0.1.1
 ```
 
 ### Build from source
@@ -123,7 +123,7 @@ Search Karakeep for `#dead-link` to see what was archived. Unarchive a bookmark 
 - **Down (skipped, left alone):** timeouts and 5xx errors. Sites have bad days.
 - **Alive:** everything else, including bot walls (401/403/429) and Cloudflare challenges.
 
-**If every try is dead or down,** you get a small page listing what was skipped, with links to Karakeep's saved copies and a "Roll again" link.
+**If every try is dead or down,** you get a small page listing what was skipped, with links to Karakeep's saved copies and a "Roll again" link. The page rolls again by itself after 3 seconds, up to 3 times in a row.
 
 ## Caveats
 

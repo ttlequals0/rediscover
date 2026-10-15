@@ -5,6 +5,10 @@ LABEL org.opencontainers.image.title="rediscover" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.licenses="MIT"
 
+# npm and corepack are unused at runtime and carry their own CVEs.
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack \
+      /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack
+
 WORKDIR /app
 ENV NODE_ENV=production PORT=8080
 COPY package.json ./
