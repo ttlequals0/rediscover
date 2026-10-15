@@ -1,6 +1,6 @@
 {
   "name": "rediscover",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Open a random, still-alive Karakeep bookmark. Dead links get archived and tagged.",
   "type": "module",
   "main": "src/server.js",

@@ -248,6 +248,15 @@ describe("server", () => {
     const html = await response.text();
     assert.match(html, /Roll again/);
     assert.match(html, /archived/);
+    assert.match(html, /http-equiv="refresh" content="3;url=\/random\?auto=1"/);
+  });
+
+  it("stops auto-rolling after the cap", async () => {
+    const client = fakeKarakeep([link("d", "2020-01-01T00:00:00.000Z", `${siteUrl}/gone`)]);
+    const response = await request(createServer(config, { client }), "/random?auto=3");
+    const html = await response.text();
+    assert.match(html, /Roll again/);
+    assert.doesNotMatch(html, /http-equiv="refresh"/);
   });
 
   it("reports Karakeep being unreachable", async () => {

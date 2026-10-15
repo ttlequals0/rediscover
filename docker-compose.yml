@@ -1,6 +1,6 @@
 services:
   rediscover:
-    image: ttlequals0/rediscover:0.1.0
+    image: ttlequals0/rediscover:0.1.1
     container_name: rediscover
     restart: unless-stopped
     ports:

@@ -40,7 +40,9 @@ function escapeHtml(text) {
   return String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 }
 
-function nothingFoundPage(config, skipped) {
+const AUTO_ROLL_LIMIT = 3;
+
+function nothingFoundPage(config, skipped, autoRolls) {
   const rows = skipped
     .map((s) => {
       const saved = previewUrl(config, s.id);
@@ -49,9 +51,10 @@ function nothingFoundPage(config, skipped) {
     .join("");
   return `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rediscover</title>
+${skipped.length && autoRolls < AUTO_ROLL_LIMIT ? `<meta http-equiv="refresh" content="3;url=/random?auto=${autoRolls + 1}">` : ""}
 <body style="font-family:system-ui,sans-serif;max-width:40rem;margin:3rem auto;padding:0 1rem;line-height:1.5">
 <h1 style="font-size:1.25rem">No live bookmark in ${skipped.length || "any"} tries</h1>
-<p><a href="/random">Roll again</a></p>${rows ? `<ul>${rows}</ul>` : ""}</body>`;
+<p><a href="/random">Roll again</a>${skipped.length && autoRolls < AUTO_ROLL_LIMIT ? " (rolling again in 3 seconds)" : ""}</p>${rows ? `<ul>${rows}</ul>` : ""}</body>`;
 }
 
 export function createServer(config, deps = {}) {
@@ -96,7 +99,7 @@ export function createServer(config, deps = {}) {
         return;
       }
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
-      res.end(nothingFoundPage(config, result.skipped));
+      res.end(nothingFoundPage(config, result.skipped, Number.parseInt(url.searchParams.get("auto"), 10) || 0));
     } catch (error) {
       log(`Error: ${error.message}`);
       res.writeHead(502, { "Content-Type": wantsJson ? "application/json" : "text/plain" });
